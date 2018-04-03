@@ -129,8 +129,6 @@ Modules used in the program are listed below:
 
 ## 6. Usage <a name="usage"></a>
 
-### NOT TOTALLY FINISH, NEEDS COMPLETION OF SOME PARAGRAPHS
-
 ### 6.1. Arguments <a name="arguments"></a>
 
 MacroBuilder is a command line program. The command for its execution is of the following form:
@@ -179,8 +177,6 @@ The user must provide the 3D structure of each pair used in the construction of 
  Plain text containing at least one block of relevant information:
  If there are inconsistencies and/or redundancies in the chain names and thus files need to be fixed, a second block containing information relative to this proccess is added before the mentioned one:
  If the user introduced the -c option, found clashes will be shown as an additional block at the end of the file.
-
-The output of the algorithm is a *.txt* file, with a name that was introduced by the user as an argument, and an *.html* file that is more advanced version of the *.txt* file. The output text file contains table(s) showing the calculated values (RMSD, distances, superimposed pairs etc.). Also, if any changes has been done for chain-identifiers of the pairs, this information is also listed in a separate block in the same file. If the user introduced clashes option as well, the list of clashes that are below the threshold are listed in a separate block in the output as well. And finally, the .html output is generated for both the final macromolecule and each base as their iteration is completed.
 
 #### 6.3.2. Final Macrocomplex and Intermediates:
 The final macrocomplex as well as all the intermediary complexes generated in its construction (bases) are returned in the same format as the 3D structures provided by the user for the construction. The files are called *base<N>.<ter>*, being *<N>* the intermediate to which it belong and *<ter>* the appropriate extension (.pdb or .cif).
