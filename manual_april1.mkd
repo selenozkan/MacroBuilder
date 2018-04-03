@@ -16,8 +16,8 @@
 5. [How MacroBuilder works](#how)
     1. [Workflow](#workflow)
     2. [Parsing of input and preparation of structures](#pars)
-    3. [Algorithm](#algorithm)
-    4. [Structural informatin](#struct_info)
+    3. [Main algorithm](#algorithm)
+    4. [Structural information](#struct_info)
     3. [Module structure](#structure)
 
 6. [Usage](#usage)
