@@ -61,8 +61,8 @@ Open the terminal and run:
 pip install MacroBuilder
 ```
 Alternatively, you can install from source code: 
-1- [Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory.
-2- In the same directory, run the following command in the terminal:
+ 1- [Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory.
+ 2- In the same directory, run the following command in the terminal:
 ```
 pip install MacroBuilder
 ```
