@@ -1,0 +1,13 @@
+Prot1	Prot2	1,2,3	A	P	P	5dn6123A.pdb
+Prot2	Prot3	A	B,C	P	P	5dn6ABC.pdb
+Prot3	Prot4	B,C	D,E	P	P	5dn6BCDE.pdb
+Prot4	Prot5	D,E	F,G	P	P	5dn6DEFG.pdb
+Prot5	Prot6	F,G	H,I	P	P	5dn6FGHI.pdb
+Prot6	Prot7	H,I	J,K	P	P	5dn6HIJK.pdb
+Prot4	Prot8	D,E	L,M	P	P	5dn6DELM.pdb
+Prot8	Prot9	L,M	N,O	P	P	5dn6LMNO.pdb
+Prot2	Prot10	A	P,Q	P	P	5dn6APQ.pdb
+Prot10	Prot11	P,Q	R,S	P	P	5dn6PQRS.pdb
+Prot11	Prot12	R,S	T,U	P	P	5dn6RSTU.pdb
+Prot12	Prot13	T,U	V,W	P	P	5dn6TUVW.pdb
+Prot11	Prot14	R,S	X,Y,Z	P	P	5dn6RSXYZ.pdb

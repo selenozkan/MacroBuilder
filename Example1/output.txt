@@ -1,0 +1,27 @@
+###################################################
+
+SUPERIMPOSING By PROTEIN STRUCTURE version 1.0
+
+###################################################
+by Antía Fernández Pintos, Eva Martín del Pico, Selen Ozkan
+Universitat Pompeu Fabra, Bioinformatics For Health Sciences, 2018
+
+File Type:	.pdb
+No. of Pairs:	13
+
+
+# REPORT
+
+FILE		RMSD		MIN.DIS		MAX.DIS		SUPERIMPOSED
+base1		0.000		6.112		174.951		5dn6123A - 5dn6ABC
+base2		0.000		48.855		220.931		5dn6123A - 5dn6APQ
+base3		0.000		3.801		197.501		5dn6ABC - 5dn6BCDE
+base4		0.000		14.715		218.031		5dn6BCDE - 5dn6DELM
+base5		0.000		3.807		221.046		5dn6APQ - 5dn6PQRS
+base6		0.000		3.776		222.805		5dn6PQRS - 5dn6RSXYZ
+base7		0.000		4.151		199.592		5dn6BCDE - 5dn6DEFG
+base8		0.000		3.743		219.236		5dn6DELM - 5dn6LMNO
+base9		0.000		4.753		219.013		5dn6DEFG - 5dn6FGHI
+base10		0.000		3.662		220.076		5dn6PQRS - 5dn6RSTU
+base11		0.000		3.608		218.634		5dn6FGHI - 5dn6HIJK
+base12		0.000		5.082		224.040		5dn6RSTU - 5dn6TUVW
