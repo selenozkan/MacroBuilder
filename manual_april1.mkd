@@ -101,7 +101,7 @@ Each iteration consists in three main operations:
  2. **Rotation and translation of incoming structure.** 
 Uncommon chains (chains that were not used for superimposition) from the incoming structure are rotated and translated using the rotation and translation matrices obtained in the previous step.  
 
- 3.**Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure).**  
+ 3. **Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure).**  
 Uncommon chains from the incoming structure are then merged with the base using the new coordinates; resulting in one complex. The algorithm then selects the following structure from the sequence, where this time the previously generated complex is considered as base and the one coming from the sequence as newpair. This iteration contines until all the structures in the sequence are merged  into the base. 
 An output file is generated for complexes generated within each iteration, named *base_n* where *n* is the number of iteration. For a sequence of *N* pairs, therefore, the n<sup>th</sup> bae represents the final complex. 
 
