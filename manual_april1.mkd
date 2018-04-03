@@ -271,7 +271,7 @@ In this case, the chain name *B* is repeated for many different proteins. MacroB
 
 To build the complex we run:
 ```
- python3 macrobuilder.py -i pairs.txt -o report.txt -mx
+ python3 macrobuilder.py -i pairs.txt -o report.txt -f pdb -mx
 ```
 Apart from the standard outputs, in this specific case we are also asking for the translation and rotation matrices used to correctly position the structure that is added to each intermidiate complex (`-mx`). 
 
