@@ -15,7 +15,9 @@
 
 5. [How MacroBuilder works](#how)
     1. [Workflow](#workflow)
-    2. [Algorithm](#algorithm)
+    2. [Parsing of input and preparation of structures](#pars)
+    3. [Algorithm](#algorithm)
+    4. [Structural informatin](#struct_info)
     3. [Module structure](#structure)
 
 6. [Usage](#usage)
@@ -84,7 +86,7 @@ The role of molecular modeling of proteins in structural biology is crucial in o
 
 ![](images/workflow.png)
 
-### 5.1. Parsing of input and preparation of structures.
+### 5.1. Parsing of input and preparation of structures.<a name="pars"></a>
 
 MacroBuilder starts by **parsing** the input file; that contain the information relative to the pairs (structures ids, chain-identifiers, molecular type and structure filepath). Then, it **checks** if there is any **inconsistency** (chain-identifier of same structure given differently in different pairs) or **redundancy** (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, same, and only same, chains must share identifier. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimer is aimed to be constructed out of homodimers, it is advantageous to change all the chain-identifiers of the whole set (use ***-multi*** flag as an optional argument). 
  The program terminates if all possible letters are used for reassigning the chain-identifiers. The **.pdb** file format allows only one character (**55 unique** possible ids) for chain-identifiers whereas .mmcif files support up to two letters. Considering the number of combinations with two letters being numerically more abundant than those with one letter; very large macromolecules compulsorily constructed in **.mmcif** (**3969 unique** psossible ids) file format.
@@ -107,7 +109,7 @@ Uncommon chains (chains that were not used for superimposition) from the incomin
 Uncommon chains from the incoming structure are then merged with the base using the new coordinates; resulting in one complex. The algorithm then selects the following structure from the sequence, where this time the previously generated complex is considered as base and the one coming from the sequence as newpair. This iteration contines until all the structures in the sequence are merged  into the base. 
 An output file is generated for complexes generated within each iteration, named *base_n* where *n* is the number of iteration. For a sequence of *N* pairs, therefore, the n<sup>th</sup> bae represents the final complex. 
 
-### 5.3. Structural information
+### 5.3. Structural information <a name="struct_info"></a>
 
 #### Distance matrix 
 In addition, in order to obtain more meaningful information about the structure of the bases and to be able to make comparisons, distance matrices are calculated. It contains all square distances between residues in a structure. Within this purpose, the algorithm calculates distance matrices between the base and new chain-identifiers coming from the new pair; the algorithm measures the distance between the atoms of the backbone of the corresponding molecule type. In case the molecular type is not or cannot be specified (e.g. unhomogenous composition), distance matrix is computed considering all the atoms. The distance matrices are further used for generating distance plots to visualize the position of the new chain compared to all other chains of the base structure.
@@ -116,7 +118,7 @@ In addition, in order to obtain more meaningful information about the structure 
 Clashes are unfavorable interactions of two non-bonding atoms in a protein structure, which are considered as artifacts. Determination of clashes could be critical for testing the protein quality, understanding possible energetic effects on the protein structure which depends on the types of atoms involved in the clash. 
 The algorithm calculates the distance between the center of all atoms in different chains for the final complex and compares it to the sum of their radii: if the distances is smaller than the sum of radii by a quantity below the threshold the user introduced, it  they are reported as clashes, and thus listed in the output file as a block.
 
-### 4.3. Module structure <a name="structure"></a>
+### 5.4. Module structure <a name="structure"></a>
 Modules used in the program are listed below:
 *  **pdb_specific.py:** 
   * *used for parsing .pdb files*
