@@ -61,14 +61,14 @@ MacroBuilder is written in Python (developed and tested in Python 3.5) and requi
 #### Unix based systems:
 
 ##### As program
-In order to use MacroBuilder as a program, [download](http://github.com/EvaMart/MacroBuilder/blob/MacroBuilder_1.0.tar.gz) and uncompress the package in the desired directory. 
+In order to use MacroBuilder as a program, [download](http://github.com/EvaMart/MacroBuilder/blob/master/MacroBuilder_1.0.tar.gz) and uncompress the package in the desired directory. 
 It is ready to use.
 
 
 ##### As a package 
 To install MacroBuilder as a package: 
 
- 1- [Download](http://github.com/EvaMart/MacroBuilder/blob/macrobuilder.tar.gz) and uncompress the package in the desired directory.
+ 1- [Download](http://github.com/EvaMart/MacroBuilder/blob/master/macrobuilder.tar.gz) and uncompress the package in the desired directory.
  2- In the same directory, run the following command in the terminal:
 ```
 pip install .
@@ -98,7 +98,7 @@ MacroBuilder enables the construction of hypothetical quimera complexes, where t
 
 ### 5.1. Workflow <a name="workflow"></a>
 
-![](doc/images/workflow.png)
+![](Images/workflow.png)
 
 ### 5.1. Parsing of input and preparation of structures.<a name="pars"></a>
 
