@@ -1,2 +1,0 @@
-# MacroBuilder
-SBI project
