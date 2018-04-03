@@ -36,7 +36,7 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
-__MacroBuilder__ is a program builds a macrocomplex given a set of pairs of 3D structure. Construction of the macroxomplex is sequential in which common structures of the pairs are superimposed. For a set of pairs with same and/or different molecule types (e.g. protein-protein, protein-DNA or protein-RNA), the program can build structures for both .pdb and .mmcif file formats. Along with the final complex structure, Macrobuilder generates intermediate complexes while providing structural information (e.g. RMSD, distance plot).
+__MacroBuilder__ is a program that builds a macrocomplex given a set of pairs of 3D atomic structure. Construction of the macroxomplex is a sequence of steps, each of which consists in the addition of a new structure to the growing complex. In order to do so, one of the structures in the new pair is superimposed with an already existing structure in the growing complex to correctly position the other structure, that will be actually added to the complex. For a set of pairs with same and/or different molecule types, either in PDB or mmCIF file formats, in adittion to the final complex atomic structure, Macrobuilder generates the intermediate complexes and other useful structural information (e.g. RMSD, distance plot).
 
 ## 2. Requiremments <a name="requirements"></a>
 
