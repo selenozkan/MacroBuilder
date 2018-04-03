@@ -32,7 +32,7 @@ REQUIREMENTS:
 1. Python version 3.x 
    Last Python version (and others), as well as its documentation are available at: https://docs.python.org/3/ .
 
-
+ 
 2. Python packages:
 
    2.1. Biopython (version 1.70)
