@@ -123,14 +123,16 @@ Modules used in the program are listed below:
  * *used for parsing .mmcif files*
 * **fixPairs.py**
  * *used for correction of inconsistency / redundancy of pairs input file*
-* **elements.py**
- * *used for calculating radii of atoms*
+* **elements.py (third party)** *
+ * *contains inoformation about periodic table of elements. Used for calculating radii of atoms.*
 * **html_templs.py**
  * *used for generating the .html output*
-* **ngl.js**
- * *used for setting up 3D view in .html output*
+* **ngl.js** * 
+ * *used for setting up 3D view in .html output. *
 * **clean_format.py**
  * *used for cleaning lines starting with "CONECT" in pdb files.*
+
+*These scripts were not developed by MacroBuilder context or developers.
 
 ## 6. Usage <a name="usage"></a>
 
