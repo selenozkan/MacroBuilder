@@ -69,14 +69,30 @@ pip install MacroBuilder
 ```
 
 ## 4. Why MacroBuilder <a name="why"></a>
+
+The role of molecular modeling of proteins in structural biology is crucial in order to understand the function of proteins. 
+
+
 ## 5. How MacroBuilder works <a name="how"></a>
 
 ### 5.1. Workflow <a name="workflow"></a>
 
 ![](images/workflow.png)
 
-### 5.2. Algorithm <a name="algorithm"></a>
-The role of molecular modeling of proteins in structural biology is crucial in order to understand the function of proteins. Protein superimposition is a method used for determining the protein structure and modeling for a given set of structures. A typical approach of superimposing protein structures is to rotate and translate the structures to minimize the root-mean-square-deviation (RMSD) of the structures, which is the arithmetic average of the coordinate differences between corresponding atoms of the structures. The program is developed for superimposition of proteins by structure. The algorithm is explained as followed:
+### 5.2. Main algorithm <a name="algorithm"></a>
+MacroBuilder builds the final complex in a recursive manner: through a sequence of discrete steps in which one new structure is added to a growing complex. 
+Each recursion consists in three main operations:
+ 1. Superimposition. 
+ 2. Rotation and translation of newcoming structure. 
+ 3. Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) 
+
+#### Superimposition 
+
+A typical approach of superimposing protein structures is to rotate and translate the structures to minimize the root-mean-square-deviation (RMSD) of the structures 
+RMSD(x,y)=\min_{Q}
+
+which is the arithmetic average of the coordinate differences between corresponding atoms of the structures. The program is developed for superimposition of proteins by structure. The algorithm is explained as followed:
+
 
 The program starts running once required flags are introduced in the command line, in which ***-f*** flag is crucial for the associated modules to be imported before parsing the files. The algorithm starts with parsing the input file; where the all the pairs and their chain-identifiers are introduced. The algorithm checks if there is any inconsistency (chain-identifier of same structure given different in different pairs) or redundancy (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, uncommon chain-identifiers should be different. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimere is aimed to be constructed out of monomeres, it is advised to use ***-multi*** flag as an optional argument; which changes all the chain-identifiers of a structure so that it is certain that the uncommon chain-identifier(s) has a unique entity and does not need be fixed again.
 
