@@ -54,13 +54,13 @@ MacroBuilder is written in Python (developed and tested in Python 3.5) and requi
 |Matplotlib   | 1.5.1           |  https://matplotlib.org/|
 
 ## 3. Installation <a name="installation"></a>
-#### Linux installation
-#####
+#### Unix based systems:
+
 Open the terminal and run:
 ```
 pip install MacroBuilder
 ```
-Alternatively, you can install from source code:
+Alternatively, you can install from source code: 
 1- [Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory.
 2- In the same directory, run the following command in the terminal:
 ```
