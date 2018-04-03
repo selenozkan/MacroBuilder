@@ -257,7 +257,7 @@ python3 macrobuilder.py -i pairs.txt -o output.txt -f pdb
 ```
 This yields the standard output.
 
-### 7.2. Example 2 chain name redundancy (PDB).<a name="example2"></a>
+### 7.2. Example 2: chain name redundancy (PDB).<a name="example2"></a>
 We want to build a complex from 23 pairs of proteic structures, each of which in constituted by one chain. The Input Pairs file (*pairs.txt*) looks as follows:
 ```
  X	A	A	B	P	P	example1/pair_his3_sc_XA.pdb
