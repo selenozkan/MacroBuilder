@@ -55,6 +55,7 @@ MacroBuilder is written in Python (developed and tested in Python 3.5) and requi
 
 ## 3. Installation <a name="installation"></a>
 #### Unix based systems:
+##### As a package 
 
 Open the terminal and run:
 ```
@@ -67,6 +68,10 @@ Alternatively, you can install from source code:
 ```
 pip install MacroBuilder
 ```
+
+##### As program
+[Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory. 
+It is ready to use.
 
 ## 4. Why MacroBuilder <a name="why"></a>
 
