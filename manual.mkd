@@ -1,5 +1,7 @@
 # MacroBuilder 
 
+by E. M. del Pico, S. Ozkan, A. Fernández
+
 ## User Manual
 
 ### Table of contents
