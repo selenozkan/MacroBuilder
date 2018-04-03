@@ -147,12 +147,12 @@ python3 macrobuilder.py -i <pairs_input_file> -f <format> -o <output_name> [<Opt
 
 |Option                | &nbsp;&nbsp;Argument            | &nbsp;&nbsp;Requiered   | &nbsp;Description |
 |:---------------------|:-------------------|:-----------|:-------------|
-| `-i/--input`         | &nbsp;&nbsp;`<pairs_input_file>`      | &nbsp;&nbsp;Yes         | &nbsp;This plain text file contains the detail about the pairs from which to build the complex (see details below) |
+| `-i/--input`         | &nbsp;&nbsp;`<pairs_input_file>`      | &nbsp;&nbsp;Yes         | &nbsp;This plain text file contains the details about the pairs from which to build the complex (see details below) |
 | `-o/--output`        | &nbsp;&nbsp;`<output_name>`     | &nbsp;&nbsp;Yes | &nbsp;Name of the ouput report|
-| `-f/--format`        | &nbsp;&nbsp;`<format>`          | &nbsp;&nbsp;Yes | &nbsp;Format of the 3D molecular structures specified inside the `<input file>` that will be used to build the complex. MacroBuilder supports **pdb** (`-f pdb`) and **mmcif** (` -f mmcif `). Default: `pdb`.  |
-| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build a homomultimer from one identical monomer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
-| `-c/-clashes`        | &nbsp;&nbsp;`<threshold>`       | &nbsp;&nbsp;No  | &nbsp;To compute the pairwise distances of all the atoms in the intermedites and final complex. If distance between two atoms is greater than the sum of their covalent radii by more than the `<threshold>`, the "clash" will be reported. `<threshold>` unit in Amstrongs.|
-| `-mx/--matrix`       | &nbsp;&nbsp;*none*              | &nbsp;&nbsp;No  | &nbsp;To output the transition and rotation matrices used in all the superimpositions.|
+| `-f/--format`        | &nbsp;&nbsp;`<format>`          | &nbsp;&nbsp;Yes | &nbsp;Format of the 3D molecular structures specified inside the `<input file>` that will be used to build the complex. MacroBuilder supports **pdb** (`-f pdb`) and **mmcif** (` -f mmcif `).  |
+| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build an homomultimer from one identical dimer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
+| `-c/-clashes`        | &nbsp;&nbsp;`<threshold>`       | &nbsp;&nbsp;No  | &nbsp;To compute the pairwise distances of all the atoms in the intermedites and final complex. If distance between two atoms is greater than the sum of their covalent radii by more than the `<threshold>`, the "clash" will be reported. `<threshold>` unit: Amstrongs.|
+| `-mx/--matrix`       | &nbsp;&nbsp;*none*              | &nbsp;&nbsp;No  | &nbsp;To output the transition and rotation matrices used to generate each base. |
 
 ### 6.2. Input <a name="input"></a>:
 
