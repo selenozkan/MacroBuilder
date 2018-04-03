@@ -322,7 +322,7 @@ It is also possible to superimpose non-identical structures. In this example we 
  ```
  To build the complex we run:
  ```
-  -i pairs.txt -o output.txt -f pdb -c 0.4
+  python3 macrobuilder.py -i pairs.txt -o output.txt -f pdb -c 0.4
  ```
  in addition, we ask for clashes with a threshold of 0.4 Amstrongs. 
  Notice the big RMSD in the superimposition of chains A from carbonoxy and deoxy haemoglobins. This is due to conformational differencies.
