@@ -241,7 +241,7 @@ In addition, a list of relevant parameters in each pair addition (RMSD of common
 
 
 ## 7. Examples <a name="examples"></a>
-### 7.1. Example 1: a simple run (PDB). <a name="example1"></a>
+### 7.1. Example 1: a simple run (PDB). <a name="ex1"></a>
 We want to build the ATP-synthase from a set of pairs of which we have the 3D atomic structure. The Input Pair file for these pairs looks as follows:
 ```
  Prot1	Prot2	1,2,3	A	P	P	5dn6123A.pdb
@@ -257,7 +257,7 @@ python3 macrobuilder.py -i pairs.txt -o output.txt -f pdb
 ```
 This yields the standard output.
 
-### 7.2. Example 2: chain name redundancy (PDB).<a name="example2"></a>
+### 7.2. Example 2: chain name redundancy (PDB).<a name="ex2"></a>
 We want to build a complex from 23 pairs of proteic structures, each of which in constituted by one chain. The Input Pairs file (*pairs.txt*) looks as follows:
 ```
  X	A	A	B	P	P	example1/pair_his3_sc_XA.pdb
@@ -275,7 +275,7 @@ To build the complex we run:
 ```
 Apart from the standard outputs, in this specific case we are also asking for the translation and rotation matrices used to correctly position the structure that is added to each intermidiate complex (`-mx`). 
 
-### 7.3. Example 3: construction of a multimere from a single homodimer (CIF). <a name="example3"></a>
+### 7.3. Example 3: construction of a multimere from a single homodimer (CIF). <a name="ex3"></a>
 We want to build an homomultimer using only one homodimer. This is, to build an homomultimer by combining one homodimer with itself several times. In order to do so, we need to make as many copies of the homodimer 3D atomic structure file as monomers (halfs of the dimer) as we want to add and build a Pair Input file like the following one:
 ```
  A	B	K,L	M,N	P	P	5dn6_KLMN.1.cif
@@ -293,7 +293,7 @@ python3 macrobuilder.py -i pairs.txt -o report.txt -f mmcif -multi -c 0.01
 The format of the 3D atomic structure files is `mmcif`. The option `-multi` is necessary to change all the chain names from the beginning.
 In addition, in this run clashes will be reported if the distance between two atoms is smaller than the sum of their covalent radii by more than 0.01 (`-c 0.01`).
 
-### 7.4. Example 4: more than one molecular type in one complex (DNA-protein). <a name="example4"></a>
+### 7.4. Example 4: more than one molecular type in one complex (DNA-protein). <a name="ex4"></a>
 We want to build a complex that contains two molecular types. The Pairs Input file looks as follow:
 ```
  G	H	G	H	N	N	5wfe_GH.pdb
@@ -309,7 +309,7 @@ To build the complex, we run:
   -i pairs.txt -o report.txt -f pdb
 ```
 
-### 7.5. Example 5: construction of a complex involving the superposition of non-identical structures. <a name="example5"></a>
+### 7.5. Example 5: construction of a complex involving the superposition of non-identical structures. <a name="ex5"></a>
 It is also possible to superimpose non-identical structures. In this example we want to reconstruct a human haemoglobin
  that contains both deoxy and carbonoxy forms of the chains. The different forms have a different source but are identical in length. The latter is a neccesary requirement for the construction, otherwise the computation of translation and rotation matrices is not possible due to the impossibility of superimposition.
  The Pairs Input file looks as follow:
