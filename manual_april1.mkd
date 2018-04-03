@@ -320,8 +320,8 @@ It is also possible to superimpose non-identical structures. In this example we 
  ```
   -i pairs.txt -o output.txt -f pdb -c 0.4
  ```
- in addition, we ask for clashes with a threshold of 0.4 Amstrongs.
- Notice the big RMSD in the superimposition of chains A, due to them having a different structure.
+ in addition, we ask for clashes with a threshold of 0.4 Amstrongs. 
+ Notice the big RMSD in the superimposition of chains A from carbonoxy and deoxy haemoglobins. This is due to conformational differencies.
  
  
  ## 8. Troubleshooting
