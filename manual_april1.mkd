@@ -1,4 +1,6 @@
-# MacroBuilder - User Manual
+# MacroBuilder 
+
+## User Manual
 
 ### Table of contents
 
@@ -9,12 +11,14 @@
 
 3. [Installation](#installation)
 
-4. [How MacroBuilder works](#how)
+4. [Why MacroBulding](#why)
+
+5. [How MacroBuilder works](#how)
     1. [Workflow](#workflow)
     2. [Algorithm](#algorithm)
     3. [Module structure](#structure)
 
-5. [Usage](#usage)
+6. [Usage](#usage)
     1. [Arguments](#arguments)
     2. [Input](#input)
        1. Pair Input file
@@ -27,7 +31,7 @@
        5. HTML results
        6. Translation and rotation matrices
 
-6. [Examples](#examples)
+7. [Examples](#examples)
     1. [Example 1: a simple run.](#ex1)
     2. [Example 2: chain name redundancy.](#ex2)
     3. [Example 3: construction of a multimere from a single dimer.](#ex3)
@@ -40,59 +44,22 @@ __MacroBuilder__ is a program that builds a macrocomplex given a set of pairs of
 
 ## 2. Requiremments <a name="requirements"></a>
 
-MacroBuilder is built with Python and some of its modules and packages that user may need to install in order to make the program run without unexpected problems.
+MacroBuilder is written in Python (developed and tested in Python 3.5) and requires the packages listed below.
 
-First of all, you may need to install the latest (or at least version 3.x) version of __Python__. We will give here simple instructions about how to install Python in Linux, but for other cases (Windows and MacOS) more information is available here: https://docs.python.org/3.5/using/windows.html#installing-python
-
-For installing latest version (stable) of Python 3:
-
-`sudo apt-get install python3`
-
-Next step is to install the following packages:
-
-__1. Biopython (version 1.70)__
-
-  How to install: http://biopython.org/wiki/Download
-
-  See also the full documentation of this package here http://biopython.org/wiki/Documentation
-
-__2. NumPy (version 1.14.1)__
-
-   Information about how to install this package is available here: https://scipy.org/install.html
-
-  For further information about this package, do not hesitate to read the documentation: https://docs.scipy.org/doc/numpy/
-
-__3. SciPy (version 1.0.0)__
-
-   Information about how to install this package is available here: https://scipy.org/install.html
-
-   Full documentation of this package can be found here: https://docs.scipy.org/doc/
-
-__4. Matplotlib (version 2.2.2)__
-
-   This library is necesary in order to use the module Pylab.
-
-   Matplotlib can be installed following the instructions here: https://matplotlib.org/users/installing.html
-
-   User's guide of this library is available in: https://matplotlib.org/users/index.html
-
-__NOTE:__
-
-These Python packages can be installed using Python's standard pip package manager.
-
-Installing pip for Python 3:
-
-`python3 -m pip install`
-
-So, you can install all modules with pip manager:
-
-`pip3 install numpy scipy biopython matplotlib`
-
-For further information about pip and its basic usage for installing Python packages, please visit: https://docs.python.org/3/installing/index.html
-
-
+|Package      | Tested version  | About       |
+|-------------|-----------------|-------------|
+|Biopython    | 1.70            | http://biopython.org |
+|Scipy        | 1.0.0           | https://scipy.org/ |
+|Numpy        | 1.14.1          | https://docs.scipy.org/doc/numpy/
+|Matplotlib   | 1.5.1           |  https://matplotlib.org/|
 
 ## 3. Installation <a name="installation"></a>
+#### Linux installation
+1- [Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory.
+2- In the same directory, run the following command in the terminal:
+```
+pip install MacroBuilder
+```
 
 ## 4. How MacroBuilder works <a name="how"></a>
 
