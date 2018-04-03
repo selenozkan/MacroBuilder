@@ -157,13 +157,13 @@ python3 macrobuilder.py -i <pairs_input_file> -f <format> -o <output_name> [<Opt
 ### 6.2. Input <a name="input"></a>:
 
 #### 6.2.1. Pairs Input file:
-The input file is a plain text in which each lines contains information about one pair to be used in the construction of the complex. Each line is of the form:
+The input file is a plain text in which each line contains information about one pair to be used in the construction of the complex. Each line is of the form:
 ```
- <struct1 id><struct2 id><struct1 chain ids><struct2 chain ids><type struct1><type struct1><file name>
+ <struct1 id>   <struct2 id>   <struct1 chain ids>   <struct2 chain ids>   <type struct1>   <type struct1>   <file name>
  ```
 where fields are tab-separated. Fields correspond to:
 
- - `<struct1 id>`:
+ - `<struct1 id>`: 
  - `<struct2 id>`:
  - `<struct1 chain ids>`:
  - `<struct2 chain ids>`:
