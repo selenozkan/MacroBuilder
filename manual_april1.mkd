@@ -34,7 +34,7 @@
 7. [Examples](#examples)
     1. [Example 1: a simple run.](#ex1)
     2. [Example 2: chain name redundancy.](#ex2)
-    3. [Example 3: construction of a multimere from a single dimer.](#ex3)
+    3. [Example 3: construction of a multimere from a single homodimer.](#ex3)
     4. [Example 4: more than one molecular type in one complex (DNA-protein).](#ex4)
     5. [Example 5: pairs of non-identical structures.](#ex5)
 
@@ -86,7 +86,7 @@ The role of molecular modeling of proteins in structural biology is crucial in o
 
 ### 5.1. Parsing of input and preparation of structures.
 
-MacroBuilder starts by **parsing** the input file; that contain the information relative to the pairs (structures ids, chain-identifiers, molecular type and structure filepath). Then, it **checks** if there is any **inconsistency** (chain-identifier of same structure given differently in different pairs) or **redundancy** (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, same, and only same, chains must share identifier. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimer is aimed to be constructed out of dimeres, it is advantageous to change all the chain-identifiers of the whole set (use ***-multi*** flag as an optional argument). 
+MacroBuilder starts by **parsing** the input file; that contain the information relative to the pairs (structures ids, chain-identifiers, molecular type and structure filepath). Then, it **checks** if there is any **inconsistency** (chain-identifier of same structure given differently in different pairs) or **redundancy** (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, same, and only same, chains must share identifier. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimer is aimed to be constructed out of homodimers, it is advantageous to change all the chain-identifiers of the whole set (use ***-multi*** flag as an optional argument). 
  The program terminates if all possible letters are used for reassigning the chain-identifiers. The **.pdb** file format allows only one character (**55 unique** possible ids) for chain-identifiers whereas .mmcif files support up to two letters. Considering the number of combinations with two letters being numerically more abundant than those with one letter; very large macromolecules compulsorily constructed in **.mmcif** (**3969 unique** psossible ids) file format.
 
 ### 5.2. Main algorithm <a name="algorithm"></a>
@@ -101,9 +101,7 @@ Each iteration consists in three main operations:
  2. **Rotation and translation of incoming structure.** 
 Uncommon chains (chains that were not used for superimposition) from the incoming structure are rotated and translated using the rotation and translation matrices obtained in the previous step.  
 
-
- 3. **Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) ** 
- 
+ 3.**Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure).**  
 Uncommon chains from the incoming structure are then merged with the base using the new coordinates; resulting in one complex. The algorithm then selects the following structure from the sequence, where this time the previously generated complex is considered as base and the one coming from the sequence as newpair. This iteration contines until all the structures in the sequence are merged  into the base. 
 An output file is generated for complexes generated within each iteration, named *base_n* where *n* is the number of iteration. For a sequence of *N* pairs, therefore, the n<sup>th</sup> bae represents the final complex. 
 
@@ -118,20 +116,18 @@ The algorithm calculates the distance between the center of all atoms in differe
 
 ### 4.3. Module structure <a name="structure"></a>
 Modules used in the program are listed below:
-*  **pdb_specific.py:**
- * *used for parsing .pdb files*
-* **mmcif_specific.py**
- * *used for parsing .mmcif files*
-* **fixPairs.py**
- * *used for correction of inconsistency / redundancy of pairs input file*
-* **html_templs.py**
- * *used for generating the .html output*
-* **clean_format.py**
- * *used for cleaning lines starting with "CONECT" in pdb files.*
- * **ngl.js** (*) 
- * *used for setting up 3D view in .html output.*
- * **elements.py** (*)
- * *contains information and methods relative to the periodic table. Used for calculating covalent radii of atoms.*
+*  **pdb_specific.py:** 
+  * *used for parsing .pdb files*
+* **mmcif_specific.py** 
+  * *used for parsing .mmcif files*
+* **fixPairs.py** 
+  * *used for correction of inconsistency / redundancy of pairs input file*
+* **html_templs.py** 
+  * *used for generating the .html output*
+* **ngl.js** (*) 
+  * *used for setting up 3D view in .html output.*
+* **elements.py** (*) 
+  * *contains information and methods relative to the periodic table. Used for calculating covalent radii of atoms.*
 
 *These scripts were not developed by MacroBuilder context or developers.
 
@@ -153,7 +149,7 @@ python3 macrobuilder.py -i <pairs_input_file> -f <format> -o <output_name> [<Opt
 | `-i/--input`         | &nbsp;&nbsp;`<pairs_input_file>`      | &nbsp;&nbsp;Yes         | &nbsp;This plain text file contains the details about the pairs from which to build the complex (see details below) |
 | `-o/--output`        | &nbsp;&nbsp;`<output_name>`     | &nbsp;&nbsp;Yes | &nbsp;Name of the ouput report|
 | `-f/--format`        | &nbsp;&nbsp;`<format>`          | &nbsp;&nbsp;Yes | &nbsp;Format of the 3D molecular structures specified inside the `<input file>` that will be used to build the complex. MacroBuilder supports **pdb** (`-f pdb`) and **mmcif** (` -f mmcif `).  |
-| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build an homomultimer from one identical dimer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
+| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build an homomultimer from one identical homodimer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
 | `-c/-clashes`        | &nbsp;&nbsp;`<threshold>`       | &nbsp;&nbsp;No  | &nbsp;To compute the pairwise distances of all the atoms in the intermedites and final complex. If distance between two atoms is greater than the sum of their covalent radii by more than the `<threshold>`, the "clash" will be reported. `<threshold>` unit: Amstrongs.|
 | `-mx/--matrix`       | &nbsp;&nbsp;*none*              | &nbsp;&nbsp;No  | &nbsp;To output the transition and rotation matrices used to generate each base. |
 
@@ -229,32 +225,31 @@ This *html* file contains the results of a MacroBuilder run in a more visual for
 In addition, a list of relevant parameters in each pair addition (RMSD of common chain in pair and minimum and maximum distances between old and newly added atoms) and a link to the rpresentations of 3D structure and plot of the resulting intermediate. 
 
 #### 6.3.6. Translation and rotation matrices:
+`matrix.trans` file contains, for each base, the rotation and translation matrices that the main algorithm used to position the last added structure. And excerpt from example data showing the rotation (top) and translation (bottom) matrices for one base. 
+```
+# P1
+[ 0.64022897 -0.74406983 -0.19096323]
+[ 0.52858182  0.6070907  -0.59333139]
+[ 0.55741199  0.27892825  0.78197884]
 
-
+[12.20881255 59.56930054 26.69124712]
+```
 
 
 ## 7. Examples <a name="examples"></a>
 ### 7.1. Example 1: a simple run (PDB). <a name="example1"></a>
-We want to the ATP-synthase from a set of pairs of which we have the 3D atomic structure. The Input Pair file for these pairs looks as follows:
+We want to build the ATP-synthase from a set of pairs of which we have the 3D atomic structure. The Input Pair file for these pairs looks as follows:
 ```
  Prot1	Prot2	1,2,3	A	P	P	5dn6123A.pdb
  Prot2	Prot3	A	B,C	P	P	5dn6ABC.pdb
  Prot3	Prot4	B,C	D,E	P	P	5dn6BCDE.pdb
  Prot4	Prot5	D,E	F,G	P	P	5dn6DEFG.pdb
- Prot5	Prot6	F,G	H,I	P	P	5dn6FGHI.pdb
- Prot6	Prot7	H,I	J,K	P	P	5dn6HIJK.pdb
- Prot4	Prot8	D,E	L,M	P	P	5dn6DELM.pdb
- Prot8	Prot9	L,M	N,O	P	P	5dn6LMNO.pdb
- Prot2	Prot10	A	P,Q	P	P	5dn6APQ.pdb
- Prot10	Prot11	P,Q	R,S	P	P	5dn6PQRS.pdb
- Prot11	Prot12	R,S	T,U	P	P	5dn6RSTU.pdb
- Prot12	Prot13	T,U	V,W	P	P	5dn6TUVW.pdb
- Prot11	Prot14	R,S	X,Y,Z	P	P	5dn6RSXYZ.pdb
+...
 ```
 Pairs do not need to be in a specific order.
-To build the complex, without using any option (minimal run), we use:
+To build the complex, without using any option (minimal run), we run:
 ```
-python3 ../../get_coord8v2.py -i pairs.txt -o output.txt -f pdb
+python3 macrobuilder.py -i pairs.txt -o output.txt -f pdb
 ```
 This yields the standard output.
 
@@ -266,21 +261,18 @@ We want to build a complex from 23 pairs of proteic structures, each of which in
  X	C	A	B	P	P	example1/pair_his3_sc_XC.pdb
 
  ...
-
- X	U	A	B	P	P	example1/pair_his3_sc_XU.pdb
- X	V	A	B	P	P	example1/pair_his3_sc_XV.pdb
- X	W	A	B	P	P	example1/pair_his3_sc_XW.pdb
 ```
 
-In this case, the chain name *B* is repeated for many different proteins. MacroBuilder needs different structures to have distinct chain names, so, in case of detecting a redundancy/inconsistency in the chain naming, it will rewrite the 3D structure files using new non-redundant and consistent chain names. These *fixed* files are have the extension *.fixed.<original extension>* and are store in the working directory.  Then, the complex construction will proceed as usual.
+In this case, the chain name *B* is repeated for many different proteins. MacroBuilder needs different structures to have distinct chain names, so, in case of detecting a redundancy/inconsistency in the chain naming, it will rewrite the 3D structure files using new non-redundant and consistent chain names. These *fixed* files are have the extension *.fixed.<original extension>* and are store in the working directory. Then, the complex construction will proceed as usual.
 
-To run the program we use:
+To build the complex we run:
 ```
  python3 macrobuilder.py -i pairs.txt -o report.txt -mx
 ```
-Apart from the standard outputs, in this specific case we are also asking for the translation and rotation matrices used to correctly position the structure that is added to each intermidiate complex.
-### 7.3. Example 3: construction of a multimere from a single dimer (CIF). <a name="example3"></a>
-We want to build an homomultimer using only one homodimer. This is, to build an homoltimer by combining one dimer with itself several times. In order to do so, we need to make as many copies of the dimer ·D atomic structure file as monomers (halfs of the dimer) as we want to add and build a Pair Input file like the following one:
+Apart from the standard outputs, in this specific case we are also asking for the translation and rotation matrices used to correctly position the structure that is added to each intermidiate complex (`-mx`). 
+
+### 7.3. Example 3: construction of a multimere from a single homodimer (CIF). <a name="example3"></a>
+We want to build an homomultimer using only one homodimer. This is, to build an homomultimer by combining one homodimer with itself several times. In order to do so, we need to make as many copies of the homodimer 3D atomic structure file as monomers (halfs of the dimer) as we want to add and build a Pair Input file like the following one:
 ```
  A	B	K,L	M,N	P	P	5dn6_KLMN.1.cif
  B	C	K,L	M,N	P	P	5dn6_KLMN.2.cif
@@ -288,46 +280,41 @@ We want to build an homomultimer using only one homodimer. This is, to build an 
  D	E	K,L	M,N	P	P	5dn6_KLMN.4.cif
  E	F	K,L	M,N	P	P	5dn6_KLMN.5.cif
 ```
- All the files have a different name. All the pairs have the same chains, as they are identical, but the structure identifiers are assigned in a way
- that ensures the construction of the multimer.
+ All the files have a different name. All the pairs have the same chains, as they are identical, but the structure identifiers are assigned in a way that ensures the construction of the multimer.
  To run MacroBuilder:
 ```
-python3 MacroBuilder.py -i pairs.txt -o report.txt -f mmcif -multi -c 0.01
+python3 macrobuilder.py -i pairs.txt -o report.txt -f mmcif -multi -c 0.01
 
 ```
-The format of the 3D structure files is `mmcif`. The option `-multi` is necessary to change all the chain names from the beginning.
+The format of the 3D atomic structure files is `mmcif`. The option `-multi` is necessary to change all the chain names from the beginning.
 In addition, in this run clashes will be reported if the distance between two atoms is smaller than the sum of their covalent radii by more than 0.01 (`-c 0.01`).
 
 ### 7.4. Example 4: more than one molecular type in one complex (DNA-protein). <a name="example4"></a>
-We want to build a complex that contains two molcular types.
+We want to build a complex that contains two molecular types. The Pairs Input file looks as follow:
 ```
  G	H	G	H	N	N	5wfe_GH.pdb
  H	I	H	I	N	N	5wfe_HI.pdb
  I	J	I	J	N	N	5wfe_IJ.pdb
  K	J	K	J	P	N	5wfe_KJ.pdb
  K	L	K	L	P	P	5wfe_KL.pdb
- A	G	A	G	P	N	5wfe_AG.pdb
- B	G	B	G	P	N	5wfe_BG.pdb
- C	G	C	G	P	N	5wfe_CG.pdb
- D	G	D	G	P	N	5wfe_DG.pdb
- E	H	E	H	P	N	5wfe_EH.pdb
- F	H	F	H	P	N	5wfe_FH.pdb
+...
 ```
+To build the complex, we run:
 
 ```
   -i pairs.txt -o report.txt -f pdb
 ```
 
-### 7.5. Example 5: pairs of non-identical structures. <a name="example5"></a>
-It is also possible to superimpose not identical structures. In this example we want to reconstruct a human haemoglobin
- that contains both deoxy and carbonoxy forms of the chains. The different forms have a different source but are identical in lenght. The later is a neeccesary requirement for the cnstruction, otherwise the computation of translation and rotation matrices is impossoble due to the impossiblity of superimposition.
- The pairs that we have are:
+### 7.5. Example 5: construction of a complex involving the superposition of non-identical structures. <a name="example5"></a>
+It is also possible to superimpose non-identical structures. In this example we want to reconstruct a human haemoglobin
+ that contains both deoxy and carbonoxy forms of the chains. The different forms have a different source but are identical in length. The latter is a neccesary requirement for the construction, otherwise the computation of translation and rotation matrices is not possible due to the impossibility of superimposition.
+ The Pairs Input file looks as follow:
  ```
  A	B	A	B	P	P	1hco.pdb
  A	C	A	C	P	P	1a3n_AC.pdb
  A	D	A	D	P	P	1a3n_AD.pdb
  ```
- To run:
+ To build the complex we run:
  ```
   -i pairs.txt -o output.txt -f pdb -c 0.4
  ```
