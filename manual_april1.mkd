@@ -99,7 +99,8 @@ Each iteration consists in three main operations:
      Depending on the molecule type; it gets the coordinates of a subset of atoms of both of the pairs (CA atoms for proteins, C<sub>3</sub>, C<sub>4</sub>, C<sub>5</sub>, O<sub>3</sub>, O<sub>5</sub> and P atoms for nucleotides and all atoms if no molecular type is specified). The coordinates are used for calculating rotation, translation matrices and RMSD values. One of the structures is set as *"base"* and the other one as *"newly added structure"* to make sure that the algorithm knows which structure is going to be translated, so that the centers of both structures' geometry are located at the same place.
 
  2. **Rotation and translation of incoming structure.** 
-Uncommon chains (chains that were not used for superimposition) from the incoming structure are rotated and translated using the rotation and translation matrices obtained in the previous step. 
+Uncommon chains (chains that were not used for superimposition) from the incoming structure are rotated and translated using the rotation and translation matrices obtained in the previous step.  
+
 
  3. **Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) ** 
  
@@ -123,12 +124,13 @@ Modules used in the program are listed below:
  * *used for parsing .mmcif files*
 * **fixPairs.py**
  * *used for correction of inconsistency / redundancy of pairs input file*
-* **elements.py (third party)** *
- * *contains inoformation about periodic table of elements. Used for calculating radii of atoms.*
 * **html_templs.py**
  * *used for generating the .html output*
+
+
 * **ngl.js** * 
- * *used for setting up 3D view in .html output. *
+ * *used for setting up 3D view in .html output.*
+ 
 * **clean_format.py**
  * *used for cleaning lines starting with "CONECT" in pdb files.*
 
