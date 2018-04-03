@@ -163,13 +163,13 @@ The input file is a plain text in which each line contains information about one
  ```
 where fields are tab-separated. Fields correspond to:
 
- - `<struct1 id>`: 
- - `<struct2 id>`:
- - `<struct1 chain ids>`:
- - `<struct2 chain ids>`:
- - `<type struct1>`:
- - `<type struct1>`:
- - `<file name>`:
+ - `<struct1 id>`: identifier of one of the structures in the pair.
+ - `<struct2 id>`: identifier of the other structure in the pair.
+ - `<struct1 chain ids>`: identifiers of chain(s) in struct1. If more than one chain, must be separated by commas (e.g. `A,B,C,K`).
+ - `<struct2 chain ids>`: identifiers of chain(s) in struct2. If more than one chain, must be separated by commas (e.g. `A,B,C,K`).
+ - `<type struct1>`: molecular type of struct1. Three possibilities: `P` for peptidic, `N`for nucleic (RNA or DNA) and `-` for other or mixed.
+ - `<type struct1>`: molecular type of struct1. Three possibilities: `P` for peptidic, `N`for nucleic (RNA or DNA) and `-` for other or mixed.
+ - `<file name>`: path of the 3D atomic structure file of the pair.
 
 
 #### 6.2.2. Atomic 3D structure of pairs:
