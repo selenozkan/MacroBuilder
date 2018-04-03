@@ -79,24 +79,30 @@ The role of molecular modeling of proteins in structural biology is crucial in o
 
 ![](images/workflow.png)
 
+### 5.2. Parsing of input and preparation of structures.
+
+MacroBuilder starts by **parsing** the input file; that contain the information relative to the pairs (structures ids, chain-identifiers, molecular type and structure filepath). Then, it **checks** if there is any **inconsistency** (chain-identifier of same structure given differently in different pairs) or **redundancy** (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, same, and only same, chains must share identifier. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimer is aimed to be constructed out of dimeres, it is advantageous to change all the chain-identifiers of the whole set (use ***-multi*** flag as an optional argument). 
+ The program terminates if all possible letters are used for reassigning the chain-identifiers. The .pdb file format allows only one character (55 unique possible ids) for chain-identifiers whereas .mmcif files support up to two letters. Considering the number of combinations with two letters being numerically more abundant than those with one letter; very large macromolecules compulsorily constructed in .mmcif (4096 unique psossible ids) file format.
+
+
 ### 5.2. Main algorithm <a name="algorithm"></a>
 MacroBuilder builds the final complex in a recursive manner: through a sequence of discrete steps in which one new structure is added to a growing complex. 
 Each recursion consists in three main operations:
- 1. Superimposition. 
- 2. Rotation and translation of newcoming structure. 
- 3. Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) 
+ 1. **Superimposition** . 
+ 
+    MacroBuilder superimposes structures using the typical approach of rotating and translating them to minimize the root-mean-square-deviation (RMSD), which is the arithmetic average of the coordinate differences between corresponding atoms of the structures. The structures superimposed are ...
+ The rotation and translation matrices applied to achieve the mentioned optimal superimpositioned are then applied in the following operation. 
+ 
+ 2. **Rotation and translation of newcoming structure.** 
+ 
+ 3. **Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) **
 
 #### Superimposition 
 
-A typical approach of superimposing protein structures is to rotate and translate the structures to minimize the root-mean-square-deviation (RMSD) of the structures 
-RMSD(x,y)=\min_{Q}
+ 
+ 
+------------------------------------
 
-which is the arithmetic average of the coordinate differences between corresponding atoms of the structures. The program is developed for superimposition of proteins by structure. The algorithm is explained as followed:
-
-
-The program starts running once required flags are introduced in the command line, in which ***-f*** flag is crucial for the associated modules to be imported before parsing the files. The algorithm starts with parsing the input file; where the all the pairs and their chain-identifiers are introduced. The algorithm checks if there is any inconsistency (chain-identifier of same structure given different in different pairs) or redundancy (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, uncommon chain-identifiers should be different. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimere is aimed to be constructed out of monomeres, it is advised to use ***-multi*** flag as an optional argument; which changes all the chain-identifiers of a structure so that it is certain that the uncommon chain-identifier(s) has a unique entity and does not need be fixed again.
-
- The program terminates if all possible letters are used for reassigning the chain-identifiers. The file format of .pdb allows only one letter for chain-identifiers whereas .mmcif files support up to two letters. Considering the number of combinations with two letters being numerically more abundant than those with one letter; very large macromolecules compulsorily constructed in .mmcif file format.
 
 After parsing (and fixing the pairs if required), pairs are put in sequence to make sure that the pairs selected from the sequence has a common structure with each other therefore can be superimposed. First, the algorithm selects the first two sequences to start superimposition. Depending on the molecule type; it gets the coordinates of subset of atoms of both of the pairs (for proteins; CA atoms, for nucleotides; C<sub>3</sub>, C<sub>4</sub>, C<sub>5</sub>, O<sub>3</sub>, O<sub>5</sub>, P atoms are selected). The coordinates are used for calculating rotation, translation matrices and RMSD values. One of the structures is set as *"base"* and the other one as *"newly added structure"* to make sure that the algorithm knows which structure is going to be translated, so that the centers of both structures' geometry are located at the same place. Uncommon chains coming from the new structure are then merged with the base using the new coordinates; resulting in one superimposed structure. The algorithm then selects the following structure from the sequence; where this time the previously superimposed output is considered as base and the one coming from the sequence as new pair. This iteration continues until all the structures in the sequence are merged with the base. An output file is generated for superimposed structures coming from each iteration, named "base" plus "number of iteration". For a sequence of n pairs, therefore, the n<sup>th</sup> base represents the final complex. Along with the output files, the program allows user, with the optional argument ***-mx***, to obtain a file named *matrix.trans* where the rotation, translation matrices of each base are stored in blocks.
 
