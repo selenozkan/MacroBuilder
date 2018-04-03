@@ -58,12 +58,7 @@ MacroBuilder is written in Python (developed and tested in Python 3.5) and requi
 ## 3. Installation <a name="installation"></a>
 #### Unix based systems:
 ##### As a package 
-
-Open the terminal and run:
-```
-pip install MacroBuilder
-```
-Alternatively, you can install from source code: 
+To install MacroBuilder as a package: 
 
  1- [Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory.
  2- In the same directory, run the following command in the terminal:
@@ -72,12 +67,17 @@ pip install MacroBuilder
 ```
 
 ##### As program
-[Download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory. 
+In order to use MacroBuilder as a program, [download](http://github.com/EvaMart/MacroBuilder/) and uncompress the package in the desired directory. 
 It is ready to use.
 
 ## 4. Why MacroBuilder <a name="why"></a>
 
-The role of molecular modeling of proteins in structural biology is crucial in order to understand the function of proteins. 
+ 
+MacroBuilder is a tool that performs the construction of complex from pairs of structures. Although simple, this task can be potentially very useful in a wide range of scenarios. 
+In the context of macromolecular tertiary and quaternary structure study, atomic resolution structures from X-ray crystallography are not always available for multiple reasons: lack of resources, experimental impossibility, etc. MacroBuilder allows to build hypothetical macrocomplexes containing as many protein as we want as long as superimposition (*) of part of the structures provided is possible.  
+MacroBuilder enables the construction of hypothetical quimera complexes, where the molecules in an original complex are substituted by same molecules from a different source, having been crystallized in different conditions, or having been mutated (provided that we have their structure interacting with - or relative to - at least one other member of the complex). Also, new partners can be added to a complex if we have the structure that result from its interaction with one member of a complex. In the same manner, MacroBuilder can also easily build homomultimers from one single structure of a homodimer. 
+
+(*) Superimposition is possible for molecules of same lenght and type.
 
 
 ## 5. How MacroBuilder works <a name="how"></a>
@@ -153,7 +153,7 @@ python3 macrobuilder.py -i <pairs_input_file> -f <format> -o <output_name> [<Opt
 | `-i/--input`         | &nbsp;&nbsp;`<pairs_input_file>`      | &nbsp;&nbsp;Yes         | &nbsp;This plain text file contains the details about the pairs from which to build the complex (see details below) |
 | `-o/--output`        | &nbsp;&nbsp;`<output_name>`     | &nbsp;&nbsp;Yes | &nbsp;Name of the ouput report|
 | `-f/--format`        | &nbsp;&nbsp;`<format>`          | &nbsp;&nbsp;Yes | &nbsp;Format of the 3D molecular structures specified inside the `<input file>` that will be used to build the complex. MacroBuilder supports **pdb** (`-f pdb`) and **mmcif** (` -f mmcif `).  |
-| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build an homomultimer from one identical homodimer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
+| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build a homomultimer from one identical homodimer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
 | `-c/-clashes`        | &nbsp;&nbsp;`<threshold>`       | &nbsp;&nbsp;No  | &nbsp;To compute the pairwise distances of all the atoms in the intermedites and final complex. If distance between two atoms is greater than the sum of their covalent radii by more than the `<threshold>`, the "clash" will be reported. `<threshold>` unit: Amstrongs.|
 | `-mx/--matrix`       | &nbsp;&nbsp;*none*              | &nbsp;&nbsp;No  | &nbsp;To output the transition and rotation matrices used to generate each base. |
 
