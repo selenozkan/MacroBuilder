@@ -215,17 +215,23 @@ base5       0.000		4.506		134.775		pair_his3_sc_XA.fixed - pair_his3_sc_XJ.fixed
  ```
 
 #### 6.3.2. Final Macrocomplex and Intermediates:
-The final macrocomplex as well as all the intermediary complexes generated in its construction (bases) are returned in the same format as the 3D structures provided by the user for the construction. The files are called *base<N>.<ter>*, being *<N>* the intermediate to which it belong and *<ter>* the appropriate extension (.pdb or .cif).
+The final macrocomplex as well as all the intermediary complexes generated in its construction (bases) are returned in the same format as the 3D atomic structures provided by the user. The files are called *base<N>.<ter>*, being *<N>* the intermediate to which it belong and *<ter>* the appropriate extension (.pdb or .cif).
 
-#### 6.3.3. Fixed atomic 3D structure files
+#### 6.3.3. Fixed atomic 3D structure files:
+3D atomic structure files generated when redundancies and/or inconsistencies are detected. They contain the exact same structure as the provided files, except for the chain identifiers, which are changed to ensure consistency and non-redundancy.
 
 #### 6.3.4. Distance Plots for intermediates and final complexes (*finalplot.png* and *baseN.png*):
-In each step of the construction, the distance between the previously generated base and the newly added structure is computed and a plot of them is generated. Distance plots are called *baseN.png*, being N the intermediate to which it belong. A plot of the distances between all the atoms in the final macrocomplex,*finalplot.png*, is also generated.
+In each step of the construction, the distance between the previously generated base and the newly added structure is computed and a plot of them is generated. Distance plots are called *baseN.png*, and N being the intermediate to which it belongs. 
+A plot of the distances between all the atoms in the final macrocomplex,*finalplot.png*, is also generated.
 
 #### 6.3.5. HTML results (*results.html*):
-This html file contains the most relevant information about the MacroBuilder run in a more visual form. It includes the details about the job,the final complex 3D structure and its distance plot. In addition, a list of main parameters in each pair addition (RMSD of common chain in pair and minimum and maximum distances between old and newly added atoms) and a link to the 3D structure and plot of the resulting intermediate.
+This *html* file contains the results of a MacroBuilder run in a more visual form. It includes the details about the job, 3D atomic representations of the final complex and its distance plot.
+In addition, a list of relevant parameters in each pair addition (RMSD of common chain in pair and minimum and maximum distances between old and newly added atoms) and a link to the rpresentations of 3D structure and plot of the resulting intermediate. 
 
 #### 6.3.6. Translation and rotation matrices:
+
+
+
 
 ## 7. Examples <a name="examples"></a>
 ### 7.1. Example 1: a simple run (PDB). <a name="example1"></a>
@@ -327,3 +333,10 @@ It is also possible to superimpose not identical structures. In this example we 
  ```
  in addition, we ask for clashes with a threshold of 0.4 Amstrongs.
  Notice the big RMSD in the superimposition of chains A, due to them having a different structure.
+ 
+ 
+ ## 8. Troubleshooting
+ 
+Of all the possible records in a PDB file, only 'ATOM' records are absolutely necessary. 
+Other records such as "MODEL" could cause an incorrect parsing and thus make the program crash, so in case of having trouble is advisable to remove any potentially conflictive record types.
+ 
