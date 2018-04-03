@@ -79,38 +79,36 @@ The role of molecular modeling of proteins in structural biology is crucial in o
 
 ![](images/workflow.png)
 
-### 5.2. Parsing of input and preparation of structures.
+### 5.1. Parsing of input and preparation of structures.
 
 MacroBuilder starts by **parsing** the input file; that contain the information relative to the pairs (structures ids, chain-identifiers, molecular type and structure filepath). Then, it **checks** if there is any **inconsistency** (chain-identifier of same structure given differently in different pairs) or **redundancy** (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, same, and only same, chains must share identifier. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimer is aimed to be constructed out of dimeres, it is advantageous to change all the chain-identifiers of the whole set (use ***-multi*** flag as an optional argument). 
  The program terminates if all possible letters are used for reassigning the chain-identifiers. The **.pdb** file format allows only one character (**55 unique** possible ids) for chain-identifiers whereas .mmcif files support up to two letters. Considering the number of combinations with two letters being numerically more abundant than those with one letter; very large macromolecules compulsorily constructed in **.mmcif** (**3969 unique** psossible ids) file format.
 
 ### 5.2. Main algorithm <a name="algorithm"></a>
-MacroBuilder builds the final complex in a recursive manner: through a sequence of discrete steps in which one new structure is added to a growing complex. 
-Each recursion consists in three main operations:
+MacroBuilder builds the final complex in an iterative manner: through a sequence of discrete steps in which one new structure is added to a growing complex. 
+Each iteration consists in three main operations:
 
  1. **Superimposition** . 
  
  After parsing (and fixing the pairs if required), pairs are put in sequence to make sure that the pairs selected from the sequence has a common structure with each other therefore can be superimposed. First, the algorithm selects the first two sequences to start superimposition. MacroBuilder superimposes structures using the typical approach of rotating and translating them to minimize the root-mean-square-deviation (RMSD), which is the arithmetic average of the coordinate differences between corresponding atoms of the structures. 
      Depending on the molecule type; it gets the coordinates of a subset of atoms of both of the pairs (CA atoms for proteins, C<sub>3</sub>, C<sub>4</sub>, C<sub>5</sub>, O<sub>3</sub>, O<sub>5</sub> and P atoms for nucleotides and all atoms if no molecular type is specified). The coordinates are used for calculating rotation, translation matrices and RMSD values. One of the structures is set as *"base"* and the other one as *"newly added structure"* to make sure that the algorithm knows which structure is going to be translated, so that the centers of both structures' geometry are located at the same place.
 
- 
  2. **Rotation and translation of incoming structure.** 
 Uncommon chains (chains that were not used for superimposition) from the incoming structure are rotated and translated using the rotation and translation matrices obtained in the previous step. 
 
- 3. **Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) **
-
-#### Superimposition 
-
+ 3. **Generation of 3D atomic structure of new intermediate (previous intermediate + incoming structure) ** 
  
- 
-------------------------------------
+Uncommon chains from the incoming structure are then merged with the base using the new coordinates; resulting in one complex. The algorithm then selects the following structure from the sequence, where this time the previously generated complex is considered as base and the one coming from the sequence as newpair. This iteration contines until all the structures in the sequence are merged  into the base. 
+An output file is generated for complexes generated within each iteration, named *base_n* where *n* is the number of iteration. For a sequence of *N* pairs, therefore, the n<sup>th</sup> bae represents the final complex. 
 
+### 5.3. Structural information
 
-In addition, in order to obtain more meaningful information about the structure of the bases and to be able to make comparisons, distance matrices are calculated. It is one of the most common matrices which contains all square distances between residues in a structure. Within this purpose, the algorithm calculates distance matrices between the base and new chain-identifiers coming from the new pair; although there are different definitions of distance, such as calculating the distance between centers of side chains of amino acids, the algorithm measures the distance between the atoms of the backbone of the corresponding molecule type. The distance matrices are further used for generating distance plots to visualize the position of the new chain compared to all other chains of the base structure.
+#### Distance matrix 
+In addition, in order to obtain more meaningful information about the structure of the bases and to be able to make comparisons, distance matrices are calculated. It contains all square distances between residues in a structure. Within this purpose, the algorithm calculates distance matrices between the base and new chain-identifiers coming from the new pair; the algorithm measures the distance between the atoms of the backbone of the corresponding molecule type. In case the molecular type is not or cannot be specified (e.g. unhomogenous composition), distance matrix is computed considering all the atoms. The distance matrices are further used for generating distance plots to visualize the position of the new chain compared to all other chains of the base structure.
 
-Moreover, the program allows user, with the another optional argument ***-c***, to get information about the clashes. Clashes are unfavorable interactions of two non-bonding atoms in a protein structure, which are considered as artifacts. Determination of clashes could be critical for testing the protein quality, understanding possible energetic effects on the protein structure which depends on the types of atoms involved in the clash. The algorithm calculates the distance between radii of all atoms in different chains for the final complex and compares it to the sum of radii. Distances that are below the threshold the user introduced are listed in the output file as a block.
-
-The output of the algorithm is a *.txt* file, with a name that was introduced by the user as an argument, and an *.html* file that is more advanced version of the *.txt* file. The output text file contains table(s) showing the calculated values (RMSD, distances, superimposed pairs etc.). Also, if any changes has been done for chain-identifiers of the pairs, this information is also listed in a separate block in the same file. If the user introduced clashes option as well, the list of clashes that are below the threshold are listed in a separate block in the output as well. And finally, the .html output is generated for both the final macromolecule and each base as their iteration is completed.
+#### Clashes
+Clashes are unfavorable interactions of two non-bonding atoms in a protein structure, which are considered as artifacts. Determination of clashes could be critical for testing the protein quality, understanding possible energetic effects on the protein structure which depends on the types of atoms involved in the clash. 
+The algorithm calculates the distance between the center of all atoms in different chains for the final complex and compares it to the sum of their radii: if the distances is smaller than the sum of radii by a quantity below the threshold the user introduced, it  they are reported as clashes, and thus listed in the output file as a block.
 
 ### 4.3. Module structure <a name="structure"></a>
 Modules used in the program are listed below:
@@ -181,6 +179,8 @@ The user must provide the 3D structure of each pair used in the construction of 
  Plain text containing at least one block of relevant information:
  If there are inconsistencies and/or redundancies in the chain names and thus files need to be fixed, a second block containing information relative to this proccess is added before the mentioned one:
  If the user introduced the -c option, found clashes will be shown as an additional block at the end of the file.
+
+The output of the algorithm is a *.txt* file, with a name that was introduced by the user as an argument, and an *.html* file that is more advanced version of the *.txt* file. The output text file contains table(s) showing the calculated values (RMSD, distances, superimposed pairs etc.). Also, if any changes has been done for chain-identifiers of the pairs, this information is also listed in a separate block in the same file. If the user introduced clashes option as well, the list of clashes that are below the threshold are listed in a separate block in the output as well. And finally, the .html output is generated for both the final macromolecule and each base as their iteration is completed.
 
 #### 6.3.2. Final Macrocomplex and Intermediates:
 The final macrocomplex as well as all the intermediary complexes generated in its construction (bases) are returned in the same format as the 3D structures provided by the user for the construction. The files are called *base<N>.<ter>*, being *<N>* the intermediate to which it belong and *<ter>* the appropriate extension (.pdb or .cif).
