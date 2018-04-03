@@ -1,0 +1,300 @@
+# MacroBuilder - User Manual
+
+### Table of contents
+
+
+1. [Introduction](#introduction)
+
+2. [Requirements](#requirements)
+
+3. [Installation](#installation)
+
+4. [How MacroBuilder works](#how)
+    1. [Workflow](#workflow)
+    2. [Algorithm](#algorithm)
+    3. [Module structure](#structure)
+
+5. [Usage](#usage)
+    1. [Arguments](#arguments)
+    2. [Input](#input)
+       1. Pair Input file
+       2. Atomic 3D structure of pairs
+    3. [Output](#output)
+       1. Report
+       2. Final Macrocomplex and Intermediates
+       3. Fixed atomic 3D structure files
+       4. Distance Plots for intermediates and final complexes
+       5. HTML results
+       6. Translation and rotation matrices
+
+6. [Examples](#examples)
+    1. [Example 1: a simple run.](#ex1)
+    2. [Example 2: chain name redundancy.](#ex2)
+    3. [Example 3: construction of a multimere from a single dimer.](#ex3)
+    4. [Example 4: more than one molecular type in one complex (DNA-protein).](#ex4)
+    5. [Example 5: pairs of non-identical structures.](#ex5)
+
+## 1. Introduction <a name="introduction"></a>
+
+__MacroBuilder__ is a program builds a macrocomplex given a set of pairs of 3D structure. Construction of the macroxomplex is sequential in which common structures of the pairs are superimposed. For a set of pairs with same and/or different molecule types (e.g. protein-protein, protein-DNA or protein-RNA), the program can build structures for both .pdb and .mmcif file formats. Along with the final complex structure, Macrobuilder generates intermediate complexes while providing structural information (e.g. RMSD, distance plot).
+
+## 2. Requiremments <a name="requirements"></a>
+
+MacroBuilder is built with Python and some of its modules and packages that user may need to install in order to make the program run without unexpected problems.
+
+First of all, you may need to install the latest (or at least version 3.x) version of __Python__. We will give here simple instructions about how to install Python in Linux, but for other cases (Windows and MacOS) more information is available here: https://docs.python.org/3.5/using/windows.html#installing-python
+
+For installing latest version (stable) of Python 3:
+
+`sudo apt-get install python3`
+
+Next step is to install the following packages:
+
+__1. Biopython (version 1.70)__
+
+  How to install: http://biopython.org/wiki/Download
+
+  See also the full documentation of this package here http://biopython.org/wiki/Documentation
+
+__2. NumPy (version 1.14.1)__
+
+   Information about how to install this package is available here: https://scipy.org/install.html
+
+  For further information about this package, do not hesitate to read the documentation: https://docs.scipy.org/doc/numpy/
+
+__3. SciPy (version 1.0.0)__
+
+   Information about how to install this package is available here: https://scipy.org/install.html
+
+   Full documentation of this package can be found here: https://docs.scipy.org/doc/
+
+__4. Matplotlib (version 2.2.2)__
+
+   This library is necesary in order to use the module Pylab.
+
+   Matplotlib can be installed following the instructions here: https://matplotlib.org/users/installing.html
+
+   User's guide of this library is available in: https://matplotlib.org/users/index.html
+
+__NOTE:__
+
+These Python packages can be installed using Python's standard pip package manager.
+
+Installing pip for Python 3:
+
+`python3 -m pip install`
+
+So, you can install all modules with pip manager:
+
+`pip3 install numpy scipy biopython matplotlib`
+
+For further information about pip and its basic usage for installing Python packages, please visit: https://docs.python.org/3/installing/index.html
+
+
+
+## 3. Installation <a name="installation"></a>
+
+## 4. How MacroBuilder works <a name="how"></a>
+
+### 4.1. Workflow <a name="workflow"></a>
+
+![](workflow.png)
+
+### 4.2. Algorithm <a name="algorithm"></a>
+The role of molecular modeling of proteins in structural biology is crucial in order to understand the function of proteins. Protein superimposition is a method used for determining the protein structure and modeling for a given set of structures. A typical approach of superimposing protein structures is to rotate and translate the structures to minimize the root-mean-square-deviation (RMSD) of the structures, which is the arithmetic average of the coordinate differences between corresponding atoms of the structures. The program is developed for superimposition of proteins by structure. The algorithm is explained as followed:
+
+The program starts running once required flags are introduced in the command line, in which ***-f*** flag is crucial for the associated modules to be imported before parsing the files. The algorithm starts with parsing the input file; where the all the pairs and their chain-identifiers are introduced. The algorithm checks if there is any inconsistency (chain-identifier of same structure given different in different pairs) or redundancy (same chain-identifier used for more than one structure) in chain-identifiers, given that for superimposition, uncommon chain-identifiers should be different. If detected any; new chain-identifiers are assigned to these chains, and saved as a new file (with .fixed extension). The algorithm makes sure that new assigned chain-identifiers are different from already existing pairs in the input. If the input file contains many pairs with same chain-identifiers, or if a multimere is aimed to be constructed out of monomeres, it is advised to use ***-multi*** flag as an optional argument; which changes all the chain-identifiers of a structure so that it is certain that the uncommon chain-identifier(s) has a unique entity and does not need be fixed again.
+
+ The program terminates if all possible letters are used for reassigning the chain-identifiers. The file format of .pdb allows only one letter for chain-identifiers whereas .mmcif files support up to two letters. Considering the number of combinations with two letters being numerically more abundant than those with one letter; very large macromolecules compulsorily constructed in .mmcif file format.
+
+After parsing (and fixing the pairs if required), pairs are put in sequence to make sure that the pairs selected from the sequence has a common structure with each other therefore can be superimposed. First, the algorithm selects the first two sequences to start superimposition. Depending on the molecule type; it gets the coordinates of subset of atoms of both of the pairs (for proteins; CA atoms, for nucleotides; C<sub>3</sub>, C<sub>4</sub>, C<sub>5</sub>, O<sub>3</sub>, O<sub>5</sub>, P atoms are selected). The coordinates are used for calculating rotation, translation matrices and RMSD values. One of the structures is set as *"base"* and the other one as *"newly added structure"* to make sure that the algorithm knows which structure is going to be translated, so that the centers of both structures' geometry are located at the same place. Uncommon chains coming from the new structure are then merged with the base using the new coordinates; resulting in one superimposed structure. The algorithm then selects the following structure from the sequence; where this time the previously superimposed output is considered as base and the one coming from the sequence as new pair. This iteration continues until all the structures in the sequence are merged with the base. An output file is generated for superimposed structures coming from each iteration, named "base" plus "number of iteration". For a sequence of n pairs, therefore, the n<sup>th</sup> base represents the final complex. Along with the output files, the program allows user, with the optional argument ***-mx***, to obtain a file named *matrix.trans* where the rotation, translation matrices of each base are stored in blocks.
+
+In addition, in order to obtain more meaningful information about the structure of the bases and to be able to make comparisons, distance matrices are calculated. It is one of the most common matrices which contains all square distances between residues in a structure. Within this purpose, the algorithm calculates distance matrices between the base and new chain-identifiers coming from the new pair; although there are different definitions of distance, such as calculating the distance between centers of side chains of amino acids, the algorithm measures the distance between the atoms of the backbone of the corresponding molecule type. The distance matrices are further used for generating distance plots to visualize the position of the new chain compared to all other chains of the base structure.
+
+Moreover, the program allows user, with the another optional argument ***-c***, to get information about the clashes. Clashes are unfavorable interactions of two non-bonding atoms in a protein structure, which are considered as artifacts. Determination of clashes could be critical for testing the protein quality, understanding possible energetic effects on the protein structure which depends on the types of atoms involved in the clash. The algorithm calculates the distance between radii of all atoms in different chains for the final complex and compares it to the sum of radii. Distances that are below the threshold the user introduced are listed in the output file as a block.
+
+The output of the algorithm is a *.txt* file, with a name that was introduced by the user as an argument, and an *.html* file that is more advanced version of the *.txt* file. The output text file contains table(s) showing the calculated values (RMSD, distances, superimposed pairs etc.). Also, if any changes has been done for chain-identifiers of the pairs, this information is also listed in a separate block in the same file. If the user introduced clashes option as well, the list of clashes that are below the threshold are listed in a separate block in the output as well. And finally, the .html output is generated for both the final macromolecule and each base as their iteration is completed.
+
+### 4.3. Module structure <a name="structure"></a>
+Modules used in the program are listed below:
+*  **pdb_specific.py:**
+ * *used for parsing .pdb files*
+* **mmcif_specific.py**
+ * *used for parsing .mmcif files*
+* **fixPairs.py**
+ * *used for correction of inconsistency / redundancy of pairs input file*
+* **elements.py**
+ * *used for calculating radii of atoms*
+* **html_templs.py**
+ * *used for generating the .html output*
+* **ngl.js**
+ * *used for setting up 3D view in .html output*
+* **clean_format.py**
+ * *used for cleaning lines starting with "CONECT" in pdb files.*
+
+## 5. Usage <a name="usage"></a>
+
+### NOT TOTALLY FINISH, NEEDS COMPLETION OF SOME PARAGRAPHS
+
+### 5.1. Arguments <a name="arguments"></a>
+
+MacroBuilder is a command line program. The command for its execution is of the following form:
+
+```
+python3 macrobuilder.py -i <pairs_input_file> -f <format> -o <output_name> [<Options>]
+
+```
+
+#### Options:
+
+|Option                | &nbsp;&nbsp;Argument            | &nbsp;&nbsp;Requiered   | &nbsp;Description |
+|:---------------------|:-------------------|:-----------|:-------------|
+| `-i/--input`         | &nbsp;&nbsp;`<pairs_input_file>`      | &nbsp;&nbsp;Yes         | &nbsp;This plain text file contains the detail about the pairs from which to build the complex (see details below) |
+| `-o/--output`        | &nbsp;&nbsp;`<output_name>`     | &nbsp;&nbsp;Yes | &nbsp;Name of the ouput report|
+| `-f/--format`        | &nbsp;&nbsp;`<format>`          | &nbsp;&nbsp;Yes | &nbsp;Format of the 3D molecular structures specified inside the `<input file>` that will be used to build the complex. MacroBuilder supports **pdb** (`-f pdb`) and **mmcif** (` -f mmcif `). Default: `pdb`.  |
+| `-multi/--multimere` | &nbsp;&nbsp; *none*             | &nbsp;&nbsp;No  | &nbsp;To build a homomultimer from one identical monomer. MacroBuilder will deal with chain names (which are identical for all the monomer) accordingly.|
+| `-c/-clashes`        | &nbsp;&nbsp;`<threshold>`       | &nbsp;&nbsp;No  | &nbsp;To compute the pairwise distances of all the atoms in the intermedites and final complex. If distance between two atoms is greater than the sum of their covalent radii by more than the `<threshold>`, the "clash" will be reported. `<threshold>` unit in Amstrongs.|
+| `-mx/--matrix`       | &nbsp;&nbsp;*none*              | &nbsp;&nbsp;No  | &nbsp;To output the transition and rotation matrices used in all the superimpositions.|
+
+### 5.2. Input <a name="input"></a>:
+
+#### 5.2.1. Pairs Input file:
+The input file is a plain text in which each lines contains information about one pair to be used in the construction of the complex. Each line is of the form:
+```
+ <struct1 id><struct2 id><struct1 chain ids><struct2 chain ids><type struct1><type struct1><file name>
+ ```
+where fields are tab-separated. Fields correspond to:
+
+ - `<struct1 id>`:
+ - `<struct2 id>`:
+ - `<struct1 chain ids>`:
+ - `<struct2 chain ids>`:
+ - `<type struct1>`:
+ - `<type struct1>`:
+ - `<file name>`:
+
+
+#### 5.2.2. Atomic 3D structure of pairs:
+The user must provide the 3D structure of each pair used in the construction of the complex, whose paths are specified in the Pairs Input file. MacroBuilder supports bpd and mmcif formats.
+
+### 5.3. Output: <a name="output"></a>
+
+#### 5.3.1. Report:
+
+ Plain text containing at least one block of relevant information:
+ If there are inconsistencies and/or redundancies in the chain names and thus files need to be fixed, a second block containing information relative to this proccess is added before the mentioned one:
+ If the user introduced the -c option, found clashes will be shown as an additional block at the end of the file.
+
+#### 5.3.2. Final Macrocomplex and Intermediates:
+The final macrocomplex as well as all the intermediary complexes generated in its construction (bases) are returned in the same format as the 3D structures provided by the user for the construction. The files are called *base<N>.<ter>*, being *<N>* the intermediate to which it belong and *<ter>* the appropriate extension (.pdb or .cif).
+
+#### 5.3.3. Fixed atomic 3D structure files
+
+#### 5.3.4. Distance Plots for intermediates and final complexes (*finalplot.png* and *baseN.png*):
+In each step of the construction, the distance between the previously generated base and the newly added structure is computed and a plot of them is generated. Distance plots are called *baseN.png*, being N the intermediate to which it belong. A plot of the distances between all the atoms in the final macrocomplex,*finalplot.png*, is also generated.
+
+#### 5.3.5. HTML results (*results.html*):
+This html file contains the most relevant information about the MacroBuilder run in a more visual form. It includes the details about the job,the final complex 3D structure and its distance plot. In addition, a list of main parameters in each pair addition (RMSD of common chain in pair and minimum and maximum distances between old and newly added atoms) and a link to the 3D structure and plot of the resulting intermediate.
+
+#### 5.3.6. Translation and rotation matrices:
+
+## 6. Examples <a name="examples"></a>
+### 6.1. Example 1: a simple run (PDB). <a name="example1"></a>
+We want to the ATP-synthase from a set of pairs of which we have the 3D atomic structure. The Input Pair file for these pairs looks as follows:
+```
+ Prot1	Prot2	1,2,3	A	P	P	5dn6123A.pdb
+ Prot2	Prot3	A	B,C	P	P	5dn6ABC.pdb
+ Prot3	Prot4	B,C	D,E	P	P	5dn6BCDE.pdb
+ Prot4	Prot5	D,E	F,G	P	P	5dn6DEFG.pdb
+ Prot5	Prot6	F,G	H,I	P	P	5dn6FGHI.pdb
+ Prot6	Prot7	H,I	J,K	P	P	5dn6HIJK.pdb
+ Prot4	Prot8	D,E	L,M	P	P	5dn6DELM.pdb
+ Prot8	Prot9	L,M	N,O	P	P	5dn6LMNO.pdb
+ Prot2	Prot10	A	P,Q	P	P	5dn6APQ.pdb
+ Prot10	Prot11	P,Q	R,S	P	P	5dn6PQRS.pdb
+ Prot11	Prot12	R,S	T,U	P	P	5dn6RSTU.pdb
+ Prot12	Prot13	T,U	V,W	P	P	5dn6TUVW.pdb
+ Prot11	Prot14	R,S	X,Y,Z	P	P	5dn6RSXYZ.pdb
+```
+Pairs do not need to be in a specific order.
+To build the complex, without using any option (minimal run), we use:
+```
+python3 ../../get_coord8v2.py -i pairs.txt -o output.txt -f pdb
+```
+This yields the standard output.
+
+### 6.2. Example 2 chain name redundancy (PDB).<a name="example2"></a>
+We want to build a complex from 23 pairs of proteic structures, each of which in constituted by one chain. The Input Pairs file (*pairs.txt*) looks as follows:
+```
+ X	A	A	B	P	P	example1/pair_his3_sc_XA.pdb
+ X	B	A	B	P	P	example1/pair_his3_sc_XB.pdb
+ X	C	A	B	P	P	example1/pair_his3_sc_XC.pdb
+
+ ...
+
+ X	U	A	B	P	P	example1/pair_his3_sc_XU.pdb
+ X	V	A	B	P	P	example1/pair_his3_sc_XV.pdb
+ X	W	A	B	P	P	example1/pair_his3_sc_XW.pdb
+```
+
+In this case, the chain name *B* is repeated for many different proteins. MacroBuilder needs different structures to have distinct chain names, so, in case of detecting a redundancy/inconsistency in the chain naming, it will rewrite the 3D structure files using new non-redundant and consistent chain names. These *fixed* files are have the extension *.fixed.<original extension>* and are store in the working directory.  Then, the complex construction will proceed as usual.
+
+To run the program we use:
+```
+ python3 macrobuilder.py -i pairs.txt -o report.txt -mx
+```
+Apart from the standard outputs, in this specific case we are also asking for the translation and rotation matrices used to correctly position the structure that is added to each intermidiate complex.
+### 6.3. Example 3: construction of a multimere from a single dimer (CIF). <a name="example3"></a>
+We want to build an homomultimer using only one homodimer. This is, to build an homoltimer by combining one dimer with itself several times. In order to do so, we need to make as many copies of the dimer ·D atomic structure file as monomers (halfs of the dimer) as we want to add and build a Pair Input file like the following one:
+```
+ A	B	K,L	M,N	P	P	5dn6_KLMN.1.cif
+ B	C	K,L	M,N	P	P	5dn6_KLMN.2.cif
+ C	D	K,L	M,N	P	P	5dn6_KLMN.3.cif
+ D	E	K,L	M,N	P	P	5dn6_KLMN.4.cif
+ E	F	K,L	M,N	P	P	5dn6_KLMN.5.cif
+```
+ All the files have a different name. All the pairs have the same chains, as they are identical, but the structure identifiers are assigned in a way
+ that ensures the construction of the multimer.
+ To run MacroBuilder:
+```
+python3 MacroBuilder.py -i pairs.txt -o report.txt -f mmcif -multi -c 0.01
+
+```
+The format of the 3D structure files is `mmcif`. The option `-multi` is necessary to change all the chain names from the beginning.
+In addition, in this run clashes will be reported if the distance between two atoms is smaller than the sum of their covalent radii by more than 0.01 (`-c 0.01`).
+
+### 6.4. Example 4: more than one molecular type in one complex (DNA-protein). <a name="example4"></a>
+We want to build a complex that contains two molcular types.
+```
+ G	H	G	H	N	N	5wfe_GH.pdb
+ H	I	H	I	N	N	5wfe_HI.pdb
+ I	J	I	J	N	N	5wfe_IJ.pdb
+ K	J	K	J	P	N	5wfe_KJ.pdb
+ K	L	K	L	P	P	5wfe_KL.pdb
+ A	G	A	G	P	N	5wfe_AG.pdb
+ B	G	B	G	P	N	5wfe_BG.pdb
+ C	G	C	G	P	N	5wfe_CG.pdb
+ D	G	D	G	P	N	5wfe_DG.pdb
+ E	H	E	H	P	N	5wfe_EH.pdb
+ F	H	F	H	P	N	5wfe_FH.pdb
+```
+
+```
+  -i pairs.txt -o report.txt -f pdb
+```
+
+### 6.5. Example 5: pairs of non-identical structures. <a name="example5"></a>
+It is also possible to superimpose not identical structures. In this example we want to reconstruct a human haemoglobin
+ that contains both deoxy and carbonoxy forms of the chains. The different forms have a different source but are identical in lenght. The later is a neeccesary requirement for the cnstruction, otherwise the computation of translation and rotation matrices is impossoble due to the impossiblity of superimposition.
+ The pairs that we have are:
+ ```
+ A	B	A	B	P	P	1hco.pdb
+ A	C	A	C	P	P	1a3n_AC.pdb
+ A	D	A	D	P	P	1a3n_AD.pdb
+ ```
+ To run:
+ ```
+  -i pairs.txt -o output.txt -f pdb -c 0.4
+ ```
+ in addition, we ask for clashes with a threshold of 0.4 Amstrongs.
+ Notice the big RMSD in the superimposition of chains A, due to them having a different structure.
